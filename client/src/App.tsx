@@ -1,10 +1,14 @@
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/Routes";
+import { Suspense } from "react";
+import LoadingSpinner from "./components/Spinner";
 
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <RouterProvider router={router} />
+      </Suspense>
     </>
   );
 }

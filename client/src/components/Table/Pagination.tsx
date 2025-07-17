@@ -43,42 +43,43 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <nav
-      className="flex justify-center items-center space-x-1 mt-4"
-      aria-label="Pagination"
-    >
+      className='flex justify-center items-center gap-1 mt-6'
+      aria-label='Pagination'>
+      {/* Prev Button */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-2 text-sm rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white disabled:opacity-50"
-      >
+        className='px-3 py-2 text-sm rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed'>
         Prev
       </button>
 
+      {/* Page Buttons */}
       {pageNumbers.map((page, index) =>
         typeof page === "number" ? (
           <button
             key={index}
             onClick={() => onPageChange(page)}
-            className={`px-3 py-2 text-sm rounded transition-all ${
+            className={`px-3 py-2 text-sm rounded-md border transition-all ${
               currentPage === page
-                ? "bg-blue-600 text-white scale-105"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white hover:bg-blue-500 hover:text-white"
-            }`}
-          >
+                ? "bg-sidebar text-white border-sidebar shadow-sm"
+                : "bg-white text-sidebar-700 border-gray-300 hover:bg-gray-100"
+            }`}>
             {page}
           </button>
         ) : (
-          <span key={index} className="px-2 py-2 text-sm text-gray-500">
+          <span
+            key={index}
+            className='px-3 py-2 text-sm text-gray-500 bg-white border border-transparent'>
             {page}
           </span>
         )
       )}
 
+      {/* Next Button */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-2 text-sm rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white disabled:opacity-50"
-      >
+        className='px-3 py-2 text-sm rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed'>
         Next
       </button>
     </nav>

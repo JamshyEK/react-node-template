@@ -12,15 +12,26 @@ const Sidebar: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
 
   return (
     <div
-      className={`fixed inset-y-0 left-0 z-30 bg-gradient-to-br from-violet-600 via-violet-500 to-violet-400 p-6 transform ${
+      className={`fixed inset-y-0 left-0 z-30 bg-sidebar p-6 transform ${
         isOpen ? "translate-x-0" : "-translate-x-full"
-      } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-64 shadow-xl`}
-    >
-      <h2 className="text-white text-2xl font-extrabold mb-8 tracking-wide">
-        My App
+      } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-64 shadow-lg`}>
+      <h2 className='text-white text-xl font-bold mb-6 tracking-wide'>
+        Modern
       </h2>
-      <nav className="space-y-2">
-        <SidebarLink to="/" currentPath={location.pathname} label="Home" />
+
+      {/* User Profile (optional) */}
+      <div className='flex flex-col items-center mb-8'>
+        <img
+          src='https://i.pravatar.cc/100' // Placeholder profile image
+          className='w-16 h-16 rounded-full border-2 border-white'
+          alt='User Avatar'
+        />
+        <p className='text-white mt-2 text-sm font-semibold'>David Green</p>
+        <p className='text-white text-xs opacity-70'>Art Director</p>
+      </div>
+
+      <nav className='space-y-2'>
+        <SidebarLink to='/' currentPath={location.pathname} label='Dashboard' />
         {sidebarRouteList?.[user?.role || "guest"]?.map((route) => (
           <SidebarLink
             key={route.link}
@@ -44,12 +55,12 @@ const SidebarLink: React.FC<{
   return (
     <Link
       to={to}
-      className={`block px-4 py-2 rounded-md font-medium transition-all duration-200 ${
+      className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all duration-200 ${
         isActive
-          ? "bg-white text-blue-700 shadow-sm"
-          : "text-white hover:bg-white/10 hover:pl-5"
-      }`}
-    >
+          ? "bg-active text-white shadow-inner"
+          : "text-white/80 hover:bg-white/10 hover:text-white"
+      }`}>
+      {/* Optional icon can go here */}
       {label}
     </Link>
   );

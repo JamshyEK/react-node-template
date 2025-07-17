@@ -3,10 +3,21 @@ import { IUser } from "../interface/interface";
 import Button from "../components/FormFields/ButtonComp";
 import FormModal from "../components/ModalForm";
 import { Column, Table } from "../components/Table/TableComp";
+import ConfirmModal from "../components/ConfirmModal";
 
 const Dashboard = () => {
   // Modal Varibles and functions-------------------
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const [sortKey, setSortKey] = useState<keyof IUser | undefined>();
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+  const handleSortChange = (key: keyof IUser, direction: "asc" | "desc") => {
+    setSortKey(key);
+    setSortDirection(direction);
+  };
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   // Modal Varibles and functions---------------
@@ -19,9 +30,17 @@ const Dashboard = () => {
       label: "Actions",
       key: "_id",
       render: (_, row) => (
-        <>
-          <Button onClick={() => onBookHandle(row?.email)}>Action</Button>
-        </>
+        <div className='flex gap-2'>
+          <Button onClick={() => onBookHandle(row?.email)} variant='primary'>
+            View
+          </Button>
+          <Button onClick={() => onBookHandle(row?.email)} variant='secondary'>
+            Edit
+          </Button>
+          <Button onClick={() => setIsConfirmModalOpen(true)} variant='danger'>
+            Delete
+          </Button>
+        </div>
       ),
     },
   ];
@@ -54,8 +73,12 @@ const Dashboard = () => {
   useEffect(() => {}, []);
   return (
     <>
-      <div className="flex justify-end px-4 py-2">
-        <Button type="button" variant="confirm" onClick={openModal}>
+      <div className='flex justify-end px-4 py-2'>
+        <Button
+          type='button'
+          className='sidebar-bg'
+          variant='confirm'
+          onClick={openModal}>
           Show Form Modal
         </Button>
       </div>
@@ -64,11 +87,16 @@ const Dashboard = () => {
         columns={userColumns}
         data={currentData}
         page={currentPage}
+        itemsPerPage={itemsPerPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
+        onSearchChange={() => {}}
+        onSortChange={handleSortChange}
+        sortKey={sortKey}
+        sortDirection={sortDirection}
       />
 
-      <FormModal isOpen={isModalOpen} onClose={closeModal} title="Form Title" />
+      <FormModal isOpen={isModalOpen} onClose={closeModal} title='Form Title' />
       {/* Reusable Modal Component */}
       {/* <Modal isOpen={isModalOpen} onClose={closeModal} testId="checkModalComp">
         <h2 className="text-xl font-bold mb-4">Modal Title</h2>
@@ -83,6 +111,16 @@ const Dashboard = () => {
           /> 
         </div>
       </Modal> */}
+
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        title='Confirm Deletion'
+        message={`Are you sure you want to delete ?`}
+        onConfirm={() => {
+          setIsConfirmModalOpen(false);
+        }}
+        onCancel={() => setIsModalOpen(false)}
+      />
     </>
   );
 };

@@ -8,6 +8,8 @@ const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const Dashboard = lazy(() => import("../pages/Dashboard"));
+const Test = lazy(() => import("../pages/Test"));
+
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -23,7 +25,7 @@ const router = createBrowserRouter([
         children: [
           { path: "/dashboard", element: <Dashboard /> },
           { path: "/profile", element: <Dashboard /> },
-          { path: "/test", element: <>Test</> },
+          { path: "/test", element: <Test/> },
         ],
       },
     ],

@@ -1,6 +1,5 @@
 import React from "react";
-import {IButtonProps} from "../../interface/interface"
-
+import { IButtonProps } from "../../interface/interface";
 
 const Button: React.FC<IButtonProps> = ({
   children,
@@ -16,17 +15,16 @@ const Button: React.FC<IButtonProps> = ({
     variant === "primary"
       ? "bg-blue-800 text-white hover:bg-blue-900 focus:ring-blue-700"
       : variant === "secondary"
-      ? "gray-400 text-gray-900 hover:bg-gray-500 focus:ring-gray-600"
-      :variant==="danger"
+      ? "bg-gray-400 text-gray-900 hover:bg-gray-500 focus:ring-gray-600"
+      : variant === "danger"
       ? "bg-red-800 text-white hover:bg-red-900 focus:ring-red-700"
-      :"bg-green-800 hover:bg-green-900 text-white focus:ring-green-700"
+      : "bg-sidebar hover:bg-sidebar text-white";
 
   return (
     <button
       type={type}
       className={`${baseStyles} ${variantStyles} ${className}`}
-      {...rest}
-    >
+      {...rest}>
       {children}
     </button>
   );
