@@ -1,6 +1,21 @@
+import { useEffect } from "react";
 import { Card } from "../components/Card";
+import { useSocket } from "../hooks/useSocket";
 
 export default function TestComponent() {
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("alert", (data: { message: string }) => {
+      console.log(data);
+    });
+
+    return () => {
+      socket.off("alert");
+    };
+  }, [socket]);
   return (
     <>
       <div className='p-4'>
