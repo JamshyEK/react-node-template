@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { addAuthHeader } from "../../utils/addAuthHeader";
 import { roles } from "../../interface/role";
+import { endPoints } from "../../utils/endPoints";
 
 interface RegisterRequest {
   name: string;
@@ -29,24 +30,25 @@ interface LoginRequest {
 interface User {
   name: string;
 }
+const baseApiUrl = import.meta.env.VITE_API_URL;
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/auth",
+    baseUrl: `${baseApiUrl}`,
     prepareHeaders: addAuthHeader,
   }),
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
       query: (body) => ({
-        url: "/register",
+        url: endPoints.REGISTER,
         method: "POST",
         body,
       }),
     }),
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (body) => ({
-        url: "/login",
+        url: endPoints.LOGIN,
         method: "POST",
         body,
       }),

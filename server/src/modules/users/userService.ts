@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { TCreateUserBody, TRoles, TUserLoginBody } from "../../types/userTypes";
-import userModel from "../../models/UserModel";
+import userModel from "../../models/userModel";
 import { generateJWT } from "../../utils/authFunction";
 import { TGetAllQueryParams } from "../../types";
 

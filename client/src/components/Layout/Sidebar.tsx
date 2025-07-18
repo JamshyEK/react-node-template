@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { sidebarRouteList } from "../../utils/sidebarItems";
 import { roles } from "../../interface/role";
 
-const user: { token: string; role: roles } = JSON.parse(
+const user: { token: string; role: roles; name: string } = JSON.parse(
   localStorage.getItem("user") || "null"
 );
 
@@ -24,15 +24,17 @@ const Sidebar: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
       </Link>
 
       {/* User Profile (optional) */}
-      <div className='flex flex-col items-center mb-8'>
-        <img
-          src='/avatar.jpg' // Placeholder profile image
-          className='w-16 h-16 rounded-full border-2 border-white'
-          alt='User Avatar'
-        />
-        <p className='text-white mt-2 text-sm font-semibold'>David Green</p>
-        <p className='text-white text-xs opacity-70'>Art Director</p>
-      </div>
+      {user ? (
+        <div className='flex flex-col items-center mb-8'>
+          <img
+            src='/avatar.jpg' // Placeholder profile image
+            className='w-16 h-16 rounded-full border-2 border-white'
+            alt='User Avatar'
+          />
+          <p className='text-white mt-2 text-sm font-semibold'>{user.name}</p>
+          <p className='text-white text-xs opacity-70'>{user.role}</p>
+        </div>
+      ) : null}
 
       <nav className='space-y-2'>
         {/* <SidebarLink to='/' currentPath={location.pathname} label='Dashboard' /> */}

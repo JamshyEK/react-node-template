@@ -51,6 +51,9 @@ const Header: React.FC = () => {
           <span className='text-gray-600 font-medium'>{data?.name}</span>
           <Link
             to='/login'
+            onClick={() => {
+              localStorage.clear();
+            }}
             className='text-gray-500 hover:text-gray-800 transition hover:underline'>
             Logout
           </Link>
@@ -91,7 +94,10 @@ const Header: React.FC = () => {
           <Link
             to='/login'
             className='block text-gray-700 text-base hover:underline'
-            onClick={() => setIsOpen(false)}>
+            onClick={() => {
+              localStorage.clear();
+              setIsOpen(false);
+            }}>
             Logout
           </Link>
         </div>

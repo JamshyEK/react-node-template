@@ -3,22 +3,26 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useLoginMutation } from "../redux/services/authApi";
 import FormInput from "../components/FormFields/FormInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginValidationSchema } from "../validators/validators";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [loginUser, { isLoading }] = useLoginMutation();
   const handleSubmit = async (values: ILogin) => {
     try {
       const response = await loginUser(values).unwrap();
-
       localStorage.setItem("user", JSON.stringify(response));
-      const location = response.role === "admin" ? "/dashboard" : "/";
-      window.location.href = location;
-      alert("Login successful!");
+      if (response.role === "admin") {
+        navigate("/admin", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
+      toast.success("Login successful!");
     } catch (error) {
       console.error("Login failed", error);
-      alert("Login failed");
+      toast.error("Login failed");
     }
   };
 

@@ -17,7 +17,7 @@ const router = createBrowserRouter([
 
   // User protected routes
   {
-    // element: <ProtectedRoute allowedRoles={["user", "admin"]} />, // both can access
+    element: <ProtectedRoute allowedRoles={["user", "admin"]} />, // both can access
     children: [
       {
         element: <MainLayout />,
