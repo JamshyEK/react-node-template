@@ -2,103 +2,66 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { Pagination } from "../components/Table/Pagination";
 
 describe("Pagination Component", () => {
-  const setup = (props: {
-    currentPage: number;
-    totalPages: number;
-    onPageChange: (page: number) => void;
-    maxVisiblePages?: number;
-  }) => {
-    return render(<Pagination {...props} />);
+  const setup = (props = {}) => {
+    const defaultProps = {
+      currentPage: 1,
+      totalPages: 10,
+      onPageChange: jest.fn(),
+      ...props,
+    };
+    render(<Pagination {...defaultProps} />);
+    return defaultProps;
   };
 
-  test("does not render when totalPages is 1 or less", () => {
-    const { container } = setup({
-      currentPage: 1,
-      totalPages: 1,
-      onPageChange: jest.fn(),
-    });
+  it("should not render if totalPages is 1 or less", () => {
+    const { container } = render(
+      <Pagination currentPage={1} totalPages={1} onPageChange={jest.fn()} />
+    );
     expect(container.firstChild).toBeNull();
   });
 
-  test("renders Prev and Next buttons", () => {
-    setup({
-      currentPage: 2,
-      totalPages: 5,
-      onPageChange: jest.fn(),
-    });
-
-    expect(screen.getByText("Prev")).toBeInTheDocument();
-    expect(screen.getByText("Next")).toBeInTheDocument();
+  it("renders Prev and Next buttons", () => {
+    setup();
+    expect(screen.getByText(/Prev/i)).toBeInTheDocument();
+    expect(screen.getByText(/Next/i)).toBeInTheDocument();
   });
 
-  test("disables Prev button on first page", () => {
-    setup({
-      currentPage: 1,
-      totalPages: 5,
-      onPageChange: jest.fn(),
-    });
-
-    expect(screen.getByText("Prev")).toBeDisabled();
+  it("calls onPageChange with next page number", () => {
+    const props = setup({ currentPage: 1 });
+    fireEvent.click(screen.getByText(/Next/i));
+    expect(props.onPageChange).toHaveBeenCalledWith(2);
   });
 
-  test("disables Next button on last page", () => {
-    setup({
-      currentPage: 5,
-      totalPages: 5,
-      onPageChange: jest.fn(),
-    });
-
-    expect(screen.getByText("Next")).toBeDisabled();
+  it("calls onPageChange with previous page number", () => {
+    const props = setup({ currentPage: 2 });
+    fireEvent.click(screen.getByText(/Prev/i));
+    expect(props.onPageChange).toHaveBeenCalledWith(1);
   });
 
-  test("calls onPageChange when page number is clicked", () => {
-    const onPageChangeMock = jest.fn();
-
-    setup({
-      currentPage: 3,
-      totalPages: 5,
-      onPageChange: onPageChangeMock,
-    });
-
-    fireEvent.click(screen.getByText("2"));
-    expect(onPageChangeMock).toHaveBeenCalledWith(2);
+  it("disables Prev button on first page", () => {
+    setup({ currentPage: 1 });
+    expect(screen.getByText(/Prev/i)).toBeDisabled();
   });
 
-  test("calls onPageChange when Prev and Next are clicked", () => {
-    const onPageChangeMock = jest.fn();
-
-    setup({
-      currentPage: 3,
-      totalPages: 5,
-      onPageChange: onPageChangeMock,
-    });
-
-    fireEvent.click(screen.getByText("Prev"));
-    expect(onPageChangeMock).toHaveBeenCalledWith(2);
-
-    fireEvent.click(screen.getByText("Next"));
-    expect(onPageChangeMock).toHaveBeenCalledWith(4);
+  it("disables Next button on last page", () => {
+    setup({ currentPage: 10, totalPages: 10 });
+    expect(screen.getByText(/Next/i)).toBeDisabled();
   });
 
-  test("renders ellipsis when needed", () => {
-    setup({
-      currentPage: 5,
-      totalPages: 10,
-      onPageChange: jest.fn(),
-    });
+  it("highlights the current page", () => {
+    setup({ currentPage: 5 });
+    const currentBtn = screen.getByRole("button", { name: "5" });
+    expect(currentBtn).toHaveClass("bg-sidebar text-white");
+  });
 
+  it("shows ellipsis when pages are truncated", () => {
+    setup({ currentPage: 5, totalPages: 20 });
     expect(screen.getAllByText("...").length).toBeGreaterThan(0);
   });
 
-  test("highlights current page", () => {
-    setup({
-      currentPage: 3,
-      totalPages: 5,
-      onPageChange: jest.fn(),
-    });
-
-    const currentPageButton = screen.getByText("3");
-    expect(currentPageButton).toHaveClass("bg-blue-600");
-    expect(currentPageButton).toHaveClass("text-white");
+  it("calls onPageChange with specific page number when number is clicked", () => {
+    const props = setup({ currentPage: 3 });
+    fireEvent.click(screen.getByRole("button", { name: "4" }));
+    expect(props.onPageChange).toHaveBeenCalledWith(4);
   });
 });
