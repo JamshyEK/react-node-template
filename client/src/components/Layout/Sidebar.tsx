@@ -15,14 +15,18 @@ const Sidebar: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
       className={`fixed inset-y-0 left-0 z-30 bg-sidebar p-6 transform ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-64 shadow-lg`}>
-      <h2 className='text-white text-xl font-bold mb-6 tracking-wide'>
-        Modern
-      </h2>
+      <Link
+        to='/'
+        className='text-gray-800 text-xl font-semibold tracking-wide'>
+        <h2 className='text-white text-xl font-bold mb-6 tracking-wide text-center w-full'>
+          My App
+        </h2>
+      </Link>
 
       {/* User Profile (optional) */}
       <div className='flex flex-col items-center mb-8'>
         <img
-          src='https://i.pravatar.cc/100' // Placeholder profile image
+          src='/avatar.jpg' // Placeholder profile image
           className='w-16 h-16 rounded-full border-2 border-white'
           alt='User Avatar'
         />
@@ -31,7 +35,7 @@ const Sidebar: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
       </div>
 
       <nav className='space-y-2'>
-        <SidebarLink to='/' currentPath={location.pathname} label='Dashboard' />
+        {/* <SidebarLink to='/' currentPath={location.pathname} label='Dashboard' /> */}
         {sidebarRouteList?.[user?.role || "guest"]?.map((route) => (
           <SidebarLink
             key={route.link}

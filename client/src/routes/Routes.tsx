@@ -4,47 +4,50 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import MainLayout from "../components/Layout/MainLayout";
 
 // Lazy-loaded pages
-const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Test = lazy(() => import("../pages/Test"));
 
-
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
+  // Public routes
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
-  { path: "/page-not-found", element: <div>page not found</div> },
+  { path: "/page-not-found", element: <div>Page not found</div> },
 
+  // User protected routes
   {
-    // element: <ProtectedRoute allowedRoles={["admin"]} />,
+    // element: <ProtectedRoute allowedRoles={["user", "admin"]} />, // both can access
     children: [
       {
         element: <MainLayout />,
         children: [
-          { path: "/dashboard", element: <Dashboard /> },
+          { path: "/", element: <Dashboard /> },
           { path: "/profile", element: <Dashboard /> },
-          { path: "/test", element: <Test/> },
+          { path: "/test", element: <Test /> },
         ],
       },
     ],
   },
+
+  // Admin only routes
   {
     element: <ProtectedRoute allowedRoles={["admin"]} />,
     children: [
       {
+        path: "/admin",
         element: <MainLayout />,
         children: [
-          { path: "/dashboard", element: <Dashboard /> },
-          { path: "/profile", element: <Dashboard /> },
-          { path: "/test", element: <>Test</> },
+          { index: true, element: <Dashboard /> },
+          { path: "profile", element: <Dashboard /> }, // Notice: no `/`
+          { path: "test", element: <Test /> },
         ],
       },
     ],
   },
 
-  { path: "*", element: <Navigate to="/page-not-found" replace /> },
+  // Catch-all
+  { path: "*", element: <Navigate to='/page-not-found' replace /> },
 ]);
 
 export default router;

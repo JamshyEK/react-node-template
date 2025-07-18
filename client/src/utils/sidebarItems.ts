@@ -5,18 +5,16 @@ export const sidebarRouteList: Record<roles, ISidebarRoute[]> = {
   admin: [
     {
       name: "Dashboard",
-      link: "/dashboard",
-    },
-    {
-      name: "Profile",
-      link: "/profile",
-    },
-    {
-      name: "Logout",
-      link: "/logout",
+      link: "/admin",
     },
     { name: "Test", link: "/test" },
   ],
   user: [],
-  guest: [],
+  guest: [
+    {
+      name: "Dashboard",
+      link: "/",
+    },
+    { name: "Test", link: "/test" },
+  ],
 };

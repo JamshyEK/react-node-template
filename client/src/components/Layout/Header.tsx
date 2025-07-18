@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { sidebarRouteList } from "../../utils/sidebarItems";
 // import { useServerHealth } from "../../hooks/usePolling";
 import { roles } from "../../interface/role";
@@ -26,7 +26,13 @@ const user: { token: string; role: roles } = JSON.parse(
 
 const Header: React.FC = () => {
   const { data } = useProfileQuery();
-  console.log("data", data);
+  const { pathname } = useLocation();
+  let titleName: string | undefined = "";
+  if (user?.role) {
+    titleName = sidebarRouteList[user.role].find(
+      (item) => item.link === pathname
+    )?.name;
+  }
 
   const [isOpen, setIsOpen] = useState(false);
   // const URL = import.meta.env.VITE_API_URL;
@@ -37,7 +43,7 @@ const Header: React.FC = () => {
         <Link
           to='/'
           className='text-gray-800 text-xl font-semibold tracking-wide'>
-          Dashboard
+          {titleName}
         </Link>
 
         <div className='hidden md:flex items-center space-x-6'>
