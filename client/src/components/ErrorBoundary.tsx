@@ -1,8 +1,8 @@
-import { Component } from "react";
-import type { ErrorInfo, ReactNode } from "react";
+import { Component, ReactNode, ErrorInfo } from "react";
 
 interface Props {
   children: ReactNode;
+  fallback?: ReactNode;
 }
 
 interface State {
@@ -22,7 +22,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("ErrorBoundary caught an error:", error, errorInfo);
-    // Optionally log to external service here
+    // Optional: send error to external service here
   }
 
   handleReload = () => {
@@ -31,18 +31,24 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   render() {
-    if (this.state.hasError) {
+    const { hasError, error } = this.state;
+    const { fallback } = this.props;
+
+    if (hasError) {
+      if (fallback) return fallback;
+
       return (
-        <div className='flex h-screen flex-col items-center justify-center bg-gray-100 text-center px-4'>
-          <h1 className='text-4xl font-bold text-red-600 mb-4'>
+        <div className="flex h-screen flex-col items-center justify-center px-4 text-center bg-gray-100 dark:bg-gray-900">
+          <h1 className="text-4xl font-bold text-red-600 dark:text-red-400 mb-4">
             Something went wrong.
           </h1>
-          <p className='text-gray-700 mb-6'>
-            {this.state.error?.message || "An unexpected error has occurred."}
+          <p className="text-gray-700 dark:text-gray-300 mb-6">
+            {error?.message || "An unexpected error has occurred."}
           </p>
           <button
             onClick={this.handleReload}
-            className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition'>
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          >
             Reload Page
           </button>
         </div>

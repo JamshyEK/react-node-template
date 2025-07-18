@@ -84,11 +84,11 @@ const MyFormModal = ({
               value={values.email}
             />
             <div className='flex justify-end space-x-4'>
+              {/* <Button type='button' variant='danger' onClick={onClose}>
+                Close
+              </Button> */}
               <Button type='submit' variant='primary'>
                 Submit
-              </Button>
-              <Button type='button' variant='danger' onClick={onClose}>
-                Close
               </Button>
             </div>
           </Form>
