@@ -1,8 +1,12 @@
 import Modal from "./ModalComp";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Button from "./FormFields/ButtonComp";
 import FormInput from "./FormFields/FormInput";
+import FormFileInput from "./FormFields/FormFileInput";
+import FormRadioGroup from "./FormFields/FormRadioGroup";
+import FormCheckbox from "./FormFields/FormCheckbox";
+import CustomDatePicker from "./FormFields/DateInput";
 
 interface MyFormValues {
   name: string;
@@ -26,8 +30,8 @@ const MyFormModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} testId="my-form-modal">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+    <Modal isOpen={isOpen} onClose={onClose} testId='my-form-modal'>
+      <h2 className='text-xl font-semibold mb-4'>{title}</h2>
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object({
@@ -36,32 +40,54 @@ const MyFormModal = ({
             .email("Invalid email")
             .required("Email is required"),
         })}
-        onSubmit={handleSubmit}
-      >
-        {({ values, handleChange }) => (
-          <Form className="space-y-4">
+        onSubmit={handleSubmit}>
+        {({ values, errors, handleChange }) => (
+          <Form className='space-y-4'>
             <FormInput
-              name="name"
-              labelName="Name"
-              placeHolder="Enter your name"
-              type="text"
+              name='name'
+              labelName='Name'
+              placeHolder='Enter your name'
+              type='text'
               value={values.name}
               onChange={handleChange}
             />
+            <FormRadioGroup
+              name='gender'
+              label='Gender'
+              options={[
+                { label: "Male", value: "male" },
+                { label: "Female", value: "female" },
+                { label: "Other", value: "other" },
+              ]}
+            />
+            <Field
+              name='startDate'
+              component={CustomDatePicker}
+              label='Start Date'
+            />{" "}
+            <FormCheckbox
+              name='skills'
+              multiple
+              options={[
+                // { label: "React", value: "react" },
+                // { label: "Node.js", value: "node" },
+                { label: "Docker", value: "docker" },
+              ]}
+            />
+            <FormFileInput name='ewe' labelName='dsd' />
             <FormInput
-              name="email"
-              labelName="Email"
-              placeHolder="Enter your email"
-              type="email"
+              name='email'
+              labelName='Email'
+              placeHolder='Enter your email'
+              type='email'
               onChange={handleChange}
               value={values.email}
             />
-
-            <div className="flex justify-end space-x-4">
-              <Button type="submit" variant="primary">
+            <div className='flex justify-end space-x-4'>
+              <Button type='submit' variant='primary'>
                 Submit
               </Button>
-              <Button type="button" variant="danger" onClick={onClose}>
+              <Button type='button' variant='danger' onClick={onClose}>
                 Close
               </Button>
             </div>
